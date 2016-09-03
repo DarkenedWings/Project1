@@ -8,5 +8,15 @@ namespace CardGames
 {
     class War
     {
+        Deck deck = new Deck();
+        Player P1 = new Player();
+        Computer CPU = new Computer();
+
+
+
+        public void DealCards()
+        {
+
+        }
     }
 }

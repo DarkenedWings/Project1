@@ -18,12 +18,10 @@ namespace CardGames
             Value = Val;
             suit = type;
         }
-
-        public Cards(int Val, char type, int place)
+        
+        public int GetVal()
         {
-
+            return Value;
         }
-
-
     }
 }

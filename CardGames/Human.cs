@@ -8,6 +8,12 @@ namespace CardGames
 {
     class Human : Player
     {
+        List<Cards> Hands = new List<Cards>();
+        protected int HandSize;
 
+        public void Draw()
+        {
+
+        }
     }
 }

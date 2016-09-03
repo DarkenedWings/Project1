@@ -10,44 +10,40 @@ namespace CardGames
     {
         Random RNG = new Random();        
               
-        int[,] Cards = new int[52,4];
-        int tmp;
+        Cards[] deck = new Cards[52];
+        Cards tmp = new Cards();
         int randX;
-        int randY;
 
         public void MakeDeck()
         {
-            for (int j = 0; j < 4; j++)
-            {
-                for (int i = 0; i < 13; i++)
-                    Cards[i, j] = (i + 1);
-            }
+            for (int i = 0; i < 13; i++)
+                deck[i] = new Cards((i % 13 + 1), (char)3);
+
+            for (int i = 13; i < 26; i++)
+                deck[i] = new Cards((i % 13 + 1), (char)4);
+
+            for (int i = 26; i < 39; i++)
+                deck[i] = new Cards((i % 13 + 1), (char)5);
+
+            for (int i = 39; i < 52; i++)
+                deck[i] = new Cards((i % 13 + 1), (char)6);
         }
 
         public void Shuffle()
         {
-            for (int j = 0; j < 4; j++)
+            for (int i = 0; i < 13; i++)
             {
-                for (int i = 0; i < 13; i++)
-                {
-                    randX = RNG.Next(0, 13);
-                    randY = RNG.Next(0, 4);
-                    tmp = Cards[i, j];
-                    Cards[i, j] = Cards[randX, randY];
-                    Cards[randX, randY] = tmp;
-                }
+                randX = RNG.Next(0, 52);
+                tmp = deck[i];
+                deck[i] = deck[randX];
+                deck[randX] = tmp;
             }
         }
 
         public void Show()
         {
-            for (int j = 0; j < 4; j++)
-            {
-                for (int i = 0; i < 13; i++)
-                    Console.Write(Cards[i,j] + " ");
-
-                Console.WriteLine();
-            }
+            for (int i = 0; i < 52; i++)
+                Console.Write(deck[i].GetVal() + " ");            
         }
     }
 }
