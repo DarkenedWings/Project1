@@ -8,13 +8,45 @@ namespace CardGames
 {
     class Deck
     {
-        int[] Cards = new int[52];
+        Random RNG = new Random();        
+              
+        int[,] Cards = new int[52,4];
+        int tmp;
+        int randX;
+        int randY;
 
-        public void CardGames()
+        public void MakeDeck()
         {
-            for (int i = 0; i < Cards.Length/4; i++)
+            for (int j = 0; j < 4; j++)
             {
-                Cards[i] = i + 1;
+                for (int i = 0; i < 13; i++)
+                    Cards[i, j] = (i + 1);
+            }
+        }
+
+        public void Shuffle()
+        {
+            for (int j = 0; j < 4; j++)
+            {
+                for (int i = 0; i < 13; i++)
+                {
+                    randX = RNG.Next(0, 13);
+                    randY = RNG.Next(0, 4);
+                    tmp = Cards[i, j];
+                    Cards[i, j] = Cards[randX, randY];
+                    Cards[randX, randY] = tmp;
+                }
+            }
+        }
+
+        public void Show()
+        {
+            for (int j = 0; j < 4; j++)
+            {
+                for (int i = 0; i < 13; i++)
+                    Console.Write(Cards[i,j] + " ");
+
+                Console.WriteLine();
             }
         }
     }

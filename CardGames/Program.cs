@@ -10,6 +10,13 @@ namespace CardGames
     {
         static void Main(string[] args)
         {
+            Deck deck = new Deck();
+
+            deck.MakeDeck();
+            deck.Shuffle();
+            deck.Show();
+            Console.ReadLine();
+            
         }
     }
 }
