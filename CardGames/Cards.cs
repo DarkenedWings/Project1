@@ -23,5 +23,10 @@ namespace CardGames
         {
             return Value;
         }
+
+        public char GetSuit()
+        {
+            return suit;
+        }
     }
 }

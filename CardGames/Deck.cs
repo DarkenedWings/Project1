@@ -12,7 +12,11 @@ namespace CardGames
               
         Cards[] deck = new Cards[52];
         Cards tmp = new Cards();
+        Player P1 = new Player();
+        Computer CPU = new Computer();
+
         int randX;
+        bool war;
 
         public void MakeDeck()
         {
@@ -43,7 +47,13 @@ namespace CardGames
         public void Show()
         {
             for (int i = 0; i < 52; i++)
-                Console.Write(deck[i].GetVal() + " ");            
+                Console.Write(deck[i].GetVal() + " ");
+        }
+
+        public bool WarCompare(int CPU, int P1)
+        {
+
+            return war;
         }
     }
 }

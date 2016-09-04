@@ -9,14 +9,29 @@ namespace CardGames
     class War
     {
         Deck deck = new Deck();
-        Player P1 = new Player();
-        Computer CPU = new Computer();
 
 
 
         public void DealCards()
         {
 
+        }
+
+        public void TurnCards()
+        {
+            Console.SetCursorPosition(Console.WindowWidth / 2 - 1, Console.WindowHeight / 4);
+            Console.BackgroundColor = ConsoleColor.White;
+            Console.Write("  ");
+            Console.SetCursorPosition(Console.WindowWidth / 2 - 1, Console.WindowHeight / 4 + 1);
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Write("7" + (char)3);
+
+            Console.SetCursorPosition(Console.WindowWidth / 2 - 1, (Console.WindowHeight / 4) * 3);
+            Console.BackgroundColor = ConsoleColor.White;
+            Console.Write("  ");
+            Console.SetCursorPosition(Console.WindowWidth / 2 - 1, (Console.WindowHeight / 4) * 3 - 1);
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.Write("7" + (char)6);
         }
     }
 }
