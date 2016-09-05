@@ -9,29 +9,181 @@ namespace CardGames
     class War
     {
         Deck deck = new Deck();
+        Human Player1 = new Human();
+        Computer CPU = new Computer();
+
+        int CardCount = 0;
+        int GameSpeed = 0;
+        int WarTime = 0;
+
+        public void StartWar()
+        {
+            Console.Clear();
+            deck.MakeDeck();
+            deck.Shuffle();
+            DealCards();
+            CPU.TestingShow();
 
 
+            //Set the game speed
+            do
+            {
+                Console.Clear();
+                Console.WriteLine("Would you like the fast or slow speed?");
+                Console.WriteLine("(1) Fast");
+                Console.WriteLine("(2) Slow");
+                try
+                {
+                    GameSpeed = int.Parse(Console.ReadLine());
+                }
+                catch
+                {
+                }
+                if (GameSpeed < 1 || GameSpeed > 2)
+                {
+                    Console.WriteLine("Try again...");
+                    Console.ReadLine();
+                }
+            } while (GameSpeed != 1 && GameSpeed != 2);
+
+            PlayGame();
+            
+        }
 
         public void DealCards()
         {
+            for (int i = 0; i < 52; i++)
+            {
+                if (CardCount % 2 == 0)
+                    Player1.AddCardToHand(deck.GetCard(i));
+                else
+                    CPU.AddCardToHand(deck.GetCard(i));
+                CardCount++;
+            }
+        }
+
+        public void PlayGame()
+        {
+            do
+            {
+                Console.Clear();
+                Console.SetCursorPosition(0, 0);
+                Console.Write("Your current deck size: " + Player1.GetHandSize());
+
+                Console.SetCursorPosition(0, Console.WindowHeight - 1);
+                Console.Write("CPU deck size: " + CPU.GetHandSize());
+
+                TurnCards(Player1.GetCardValue(0), Player1.GetCardSuit(), CPU.GetCardValue(0), CPU.GetCardSuit());
+
+                if(Player1.GetCardValue(0) > CPU.GetCardValue(0))
+                {
+                    Player1.AddCardToHand(CPU.GetCardItself());
+                    CPU.LoseCards();
+                }
+                else if(CPU.GetCardValue(0) > Player1.GetCardValue(0))
+                {
+                    CPU.AddCardToHand(Player1.GetCardItself());
+                    Player1.LoseCards();
+                }
+                else if (Player1.GetCardValue(0) == CPU.GetCardValue(0))
+                    CardsAtWar();
+
+
+                WarTime = 0;
+
+                if (GameSpeed == 2)
+                    Console.ReadLine();
+                else
+                    System.Threading.Thread.Sleep(50);
+
+            } while (Player1.GetHandSize() > 0 && CPU.GetHandSize() > 0);
+
+            if (Player1.GetHandSize() <= 0)
+            {
+                string lose = "You Lose...";
+                Console.BackgroundColor = ConsoleColor.Red;
+                Console.ForegroundColor = ConsoleColor.Blue;
+                Console.Clear();
+                Console.SetCursorPosition((Console.WindowWidth - lose.Length) / 2, Console.WindowHeight / 2);
+                Console.Write(lose);
+                Console.ReadLine();
+                Environment.Exit(0);
+            }
+            else if (CPU.GetHandSize() <= 0)
+            {
+                string victory = "You Win!!!";
+                Console.BackgroundColor = ConsoleColor.Green;
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.Clear();
+                Console.SetCursorPosition((Console.WindowWidth - victory.Length) / 2, Console.WindowHeight / 2);
+                Console.Write(victory);
+                Console.ReadLine();
+                Environment.Exit(0);
+            }
 
         }
 
-        public void TurnCards()
+
+        public void TurnCards(int PlayerVal, char PlayerSuit, int CPUVal, char CPUSuit)
         {
             Console.SetCursorPosition(Console.WindowWidth / 2 - 1, Console.WindowHeight / 4);
             Console.BackgroundColor = ConsoleColor.White;
-            Console.Write("  ");
+            Console.Write("   ");
             Console.SetCursorPosition(Console.WindowWidth / 2 - 1, Console.WindowHeight / 4 + 1);
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.Write("7" + (char)3);
+            if (PlayerSuit == 3 || PlayerSuit == 4)
+                Console.ForegroundColor = ConsoleColor.Red;
+            else
+                Console.ForegroundColor = ConsoleColor.Black;
+            if (PlayerVal < 10)
+                Console.Write(PlayerVal + " " + PlayerSuit);
+            else
+                Console.Write(PlayerVal + PlayerSuit);
 
             Console.SetCursorPosition(Console.WindowWidth / 2 - 1, (Console.WindowHeight / 4) * 3);
             Console.BackgroundColor = ConsoleColor.White;
-            Console.Write("  ");
+            Console.Write("   ");
             Console.SetCursorPosition(Console.WindowWidth / 2 - 1, (Console.WindowHeight / 4) * 3 - 1);
-            Console.ForegroundColor = ConsoleColor.Black;
-            Console.Write("7" + (char)6);
+            if (CPUSuit == 3 || CPUSuit == 4)
+                Console.ForegroundColor = ConsoleColor.Red;
+            else
+                Console.ForegroundColor = ConsoleColor.Black;
+
+            if (CPUVal < 10)
+                Console.Write(CPUVal + " " + CPUSuit);
+            else
+                Console.Write(CPUVal + CPUSuit);
+
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.Gray;
+        }
+
+        public void CardsAtWar()
+        {
+            WarTime += 4;
+            if (Player1.GetCardValue(WarTime) > CPU.GetCardValue(WarTime))
+            {
+                Player1.AddCardToHand(CPU.GetCardItself());
+                CPU.LoseCards();
+                Player1.AddCardToHand(CPU.GetCardItself());
+                CPU.LoseCards();
+                Player1.AddCardToHand(CPU.GetCardItself());
+                CPU.LoseCards();
+                Player1.AddCardToHand(CPU.GetCardItself());
+                CPU.LoseCards();
+            }
+            else if (CPU.GetCardValue(WarTime) > Player1.GetCardValue(WarTime))
+            {
+                CPU.AddCardToHand(Player1.GetCardItself());
+                Player1.LoseCards();
+                CPU.AddCardToHand(Player1.GetCardItself());
+                Player1.LoseCards();
+                CPU.AddCardToHand(Player1.GetCardItself());
+                Player1.LoseCards();
+                CPU.AddCardToHand(Player1.GetCardItself());
+                Player1.LoseCards();
+            }
+            else if (Player1.GetCardValue(WarTime) == CPU.GetCardValue(WarTime))
+                CardsAtWar();
         }
     }
 }
