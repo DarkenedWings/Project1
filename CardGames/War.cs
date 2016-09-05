@@ -22,7 +22,7 @@ namespace CardGames
             deck.MakeDeck();
             deck.Shuffle();
             DealCards();
-            CPU.TestingShow();
+            //CPU.TestingShow();
 
 
             //Set the game speed
@@ -67,27 +67,48 @@ namespace CardGames
             do
             {
                 Console.Clear();
+
+                //Have current hand sizes displayed
                 Console.SetCursorPosition(0, 0);
                 Console.Write("Your current deck size: " + Player1.GetHandSize());
 
                 Console.SetCursorPosition(0, Console.WindowHeight - 1);
                 Console.Write("CPU deck size: " + CPU.GetHandSize());
 
-                TurnCards(Player1.GetCardValue(0), Player1.GetCardSuit(), CPU.GetCardValue(0), CPU.GetCardSuit());
+                //Display the cards
+                TurnCards(Player1.GetCardItself(), CPU.GetCardItself());
 
-                if(Player1.GetCardValue(0) > CPU.GetCardValue(0))
+                //Comparing card values
+                if (Player1.GetCardValue(0) == 1 && CPU.GetCardValue(0) != 1)
                 {
                     Player1.AddCardToHand(CPU.GetCardItself());
+                    Player1.AddCardToHand(Player1.GetCardItself());
+                    Player1.LoseCards();
+                    CPU.LoseCards();
+                }
+                else if (CPU.GetCardValue(0) == 1 && Player1.GetCardValue(0) != 1)
+                {
+                    CPU.AddCardToHand(Player1.GetCardItself());
+                    CPU.AddCardToHand(CPU.GetCardItself());
+                    CPU.LoseCards();
+                    Player1.LoseCards();
+                }
+                else if(Player1.GetCardValue(0) > CPU.GetCardValue(0))
+                {
+                    Player1.AddCardToHand(CPU.GetCardItself());
+                    Player1.AddCardToHand(Player1.GetCardItself());
+                    Player1.LoseCards();
                     CPU.LoseCards();
                 }
                 else if(CPU.GetCardValue(0) > Player1.GetCardValue(0))
                 {
                     CPU.AddCardToHand(Player1.GetCardItself());
+                    CPU.AddCardToHand(CPU.GetCardItself());
+                    CPU.LoseCards();
                     Player1.LoseCards();
                 }
                 else if (Player1.GetCardValue(0) == CPU.GetCardValue(0))
                     CardsAtWar();
-
 
                 WarTime = 0;
 
@@ -124,34 +145,50 @@ namespace CardGames
         }
 
 
-        public void TurnCards(int PlayerVal, char PlayerSuit, int CPUVal, char CPUSuit)
+        public void TurnCards(Cards P1, Cards Com)
         {
             Console.SetCursorPosition(Console.WindowWidth / 2 - 1, Console.WindowHeight / 4);
             Console.BackgroundColor = ConsoleColor.White;
             Console.Write("   ");
             Console.SetCursorPosition(Console.WindowWidth / 2 - 1, Console.WindowHeight / 4 + 1);
-            if (PlayerSuit == 3 || PlayerSuit == 4)
+            if (P1.GetSuit() == (char)3 || P1.GetSuit() == (char)4)
                 Console.ForegroundColor = ConsoleColor.Red;
             else
                 Console.ForegroundColor = ConsoleColor.Black;
-            if (PlayerVal < 10)
-                Console.Write(PlayerVal + " " + PlayerSuit);
-            else
-                Console.Write(PlayerVal + PlayerSuit);
+            if (P1.GetVal() == 1)
+                Console.Write('A' + " " + P1.GetSuit());
+            else if (P1.GetVal() < 10 && P1.GetVal() > 1)
+                Console.Write(P1.GetVal() + " " + P1.GetSuit());
+            else if (P1.GetVal() == 10)
+                Console.Write("10" + P1.GetSuit());
+            else if (P1.GetVal() == 11)
+                Console.Write('J' + " " + P1.GetSuit());
+            else if (P1.GetVal() == 12)
+                Console.Write('Q' + " " + P1.GetSuit());
+            else if (P1.GetVal() == 13)
+                Console.Write('K' + " " + P1.GetSuit());
 
             Console.SetCursorPosition(Console.WindowWidth / 2 - 1, (Console.WindowHeight / 4) * 3);
             Console.BackgroundColor = ConsoleColor.White;
             Console.Write("   ");
             Console.SetCursorPosition(Console.WindowWidth / 2 - 1, (Console.WindowHeight / 4) * 3 - 1);
-            if (CPUSuit == 3 || CPUSuit == 4)
+            if (Com.GetSuit() == 3 || Com.GetSuit() == 4)
                 Console.ForegroundColor = ConsoleColor.Red;
             else
                 Console.ForegroundColor = ConsoleColor.Black;
 
-            if (CPUVal < 10)
-                Console.Write(CPUVal + " " + CPUSuit);
-            else
-                Console.Write(CPUVal + CPUSuit);
+            if (Com.GetVal() == 1)
+                Console.Write('A' + " " + Com.GetSuit());
+            else if (Com.GetVal() < 10 && Com.GetVal() > 1)
+                Console.Write(Com.GetVal() + " " + Com.GetSuit());
+            else if (Com.GetVal() == 10)
+                Console.Write("10" + Com.GetSuit());
+            else if (Com.GetVal() == 11)
+                Console.Write('J' + " " + Com.GetSuit());
+            else if (Com.GetVal() == 12)
+                Console.Write('Q' + " " + Com.GetSuit());
+            else if (Com.GetVal() == 13)
+                Console.Write('K' + " " + Com.GetSuit());
 
             Console.BackgroundColor = ConsoleColor.Black;
             Console.ForegroundColor = ConsoleColor.Gray;
