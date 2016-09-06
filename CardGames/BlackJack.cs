@@ -26,6 +26,7 @@ namespace CardGames
         {
             while (choice != 3)
             {
+                //Reseting all values so you can play multiple times
                 deck.ResetDeck();
                 deck.MakeDeck();
                 deck.Shuffle();
@@ -36,10 +37,12 @@ namespace CardGames
                 CPUTotal = 0;
                 CardHidden = true;        
 
+                //Does the math for the user and shows current totals
                 ShowCurrentTotals();
                 do
                 {
                     choice = 0;
+                    //Show the current cards
                     for (int i = 0; i < Player1.GetHandSize(); i++)
                     {
                         ShowPlayerHand(Player1.GetCardItself(i));

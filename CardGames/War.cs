@@ -47,6 +47,7 @@ namespace CardGames
                 }
             } while (GameSpeed != 1 && GameSpeed != 2);
 
+            //Starts the game
             PlayGame();
             
         }
@@ -125,6 +126,7 @@ namespace CardGames
                     Console.ForegroundColor = ConsoleColor.Gray;
                     CardsAtWar();
                 }
+                //Change card place to allow drawing multiple cards to the screen
                 WarCardPlace = 2;
 
                 WarTime = 0;
