@@ -28,7 +28,7 @@ namespace CardGames
 
         virtual public int GetHandSize()
         {
-            return HandSize;
+            return Hand.Count();
         }
 
         virtual public int GetCardValue(int i)
@@ -41,10 +41,9 @@ namespace CardGames
             return Hand[0].GetSuit();
         }
 
-        virtual public Cards GetCardItself()
+        virtual public Cards GetCardItself(int ListSub)
         {
-            return Hand[0];
-
+            return Hand[ListSub];
         }
     }
 }

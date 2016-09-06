@@ -24,7 +24,7 @@ namespace CardGames
 
         public override int GetHandSize()
         {
-            return HandSize;
+            return ComputerHand.Count();
         }
 
         public override int GetCardValue(int i)
@@ -45,9 +45,10 @@ namespace CardGames
             Console.ReadLine();
         }
 
-        public override Cards GetCardItself()
+        public override Cards GetCardItself(int ListSub)
         {
-            return ComputerHand[0];
+
+            return ComputerHand[ListSub];
         }
     }
 }

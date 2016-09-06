@@ -11,6 +11,7 @@ namespace CardGames
         static void Main(string[] args)
         {            
             War WarGame = new War();
+            BlackJack BlackJackGame = new BlackJack();
 
             int choice = 0;
 
@@ -32,15 +33,18 @@ namespace CardGames
                 }
                 Console.Clear();
             } while (choice != 1 && choice != 2);
+
             switch (choice)
             {
                 case 1:
                     WarGame.StartWar();
                     break;
+                case 2:
+                    BlackJackGame.StartBlackjack();
+                    break;
                 default:
                     break;
             }
-
             Console.ReadLine();
             choice = 0;
         } 

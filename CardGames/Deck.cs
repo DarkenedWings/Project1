@@ -10,24 +10,25 @@ namespace CardGames
     {
         Random RNG = new Random();        
               
-        Cards[] deck = new Cards[52];
+        List<Cards> deck = new List<Cards>();
         Cards tmp = new Cards();
-
+        
         int randX;
 
         public void MakeDeck()
         {
+            
             for (int i = 0; i < 13; i++)
-                deck[i] = new Cards((i % 13 + 1), (char)3);
+                deck.Add(new Cards((i % 13 + 1), (char)3));
 
             for (int i = 13; i < 26; i++)
-                deck[i] = new Cards((i % 13 + 1), (char)4);
+                deck.Add(new Cards((i % 13 + 1), (char)4));
 
             for (int i = 26; i < 39; i++)
-                deck[i] = new Cards((i % 13 + 1), (char)5);
+                deck.Add(new Cards((i % 13 + 1), (char)5));
 
             for (int i = 39; i < 52; i++)
-                deck[i] = new Cards((i % 13 + 1), (char)6);
+                deck.Add(new Cards((i % 13 + 1), (char)6));
         }
 
         public void Shuffle()
@@ -50,6 +51,19 @@ namespace CardGames
         public Cards GetCard(int num)
         {
             return deck[num];
+        }
+
+        public void RemoveCard()
+        {
+            deck.Remove(deck[0]);
+        }
+
+        public void ResetDeck()
+        {
+            for (int i = deck.Count - 1; i > 0; i--)
+            {
+                deck.RemoveAt(i);
+            }
         }
     }
 }

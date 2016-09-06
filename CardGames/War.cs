@@ -15,6 +15,7 @@ namespace CardGames
         int CardCount = 0;
         int GameSpeed = 0;
         int WarTime = 0;
+        int WarCardPlace = 2;
 
         public void StartWar()
         {
@@ -76,39 +77,55 @@ namespace CardGames
                 Console.Write("CPU deck size: " + CPU.GetHandSize());
 
                 //Display the cards
-                TurnCards(Player1.GetCardItself(), CPU.GetCardItself());
+                TurnCards(Player1.GetCardItself(0), CPU.GetCardItself(0));
 
                 //Comparing card values
                 if (Player1.GetCardValue(0) == 1 && CPU.GetCardValue(0) != 1)
                 {
-                    Player1.AddCardToHand(CPU.GetCardItself());
-                    Player1.AddCardToHand(Player1.GetCardItself());
+                    Player1.AddCardToHand(CPU.GetCardItself(0));
+                    Player1.AddCardToHand(Player1.GetCardItself(0));
                     Player1.LoseCards();
                     CPU.LoseCards();
                 }
                 else if (CPU.GetCardValue(0) == 1 && Player1.GetCardValue(0) != 1)
                 {
-                    CPU.AddCardToHand(Player1.GetCardItself());
-                    CPU.AddCardToHand(CPU.GetCardItself());
+                    CPU.AddCardToHand(Player1.GetCardItself(0));
+                    CPU.AddCardToHand(CPU.GetCardItself(0));
                     CPU.LoseCards();
                     Player1.LoseCards();
                 }
-                else if(Player1.GetCardValue(0) > CPU.GetCardValue(0))
+                else if (Player1.GetCardValue(0) == 2 || CPU.GetCardValue(0) == 2)
                 {
-                    Player1.AddCardToHand(CPU.GetCardItself());
-                    Player1.AddCardToHand(Player1.GetCardItself());
+                    string TwoWar = "A two was thrown. This means WAR!!!";
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.SetCursorPosition(Console.WindowWidth / 2 - (TwoWar.Length / 2), Console.WindowHeight / 2);
+                    Console.WriteLine(TwoWar);
+                    Console.ForegroundColor = ConsoleColor.Gray;
+                    CardsAtWar();
+                }
+                else if (Player1.GetCardValue(0) > CPU.GetCardValue(0))
+                {
+                    Player1.AddCardToHand(CPU.GetCardItself(0));
+                    Player1.AddCardToHand(Player1.GetCardItself(0));
                     Player1.LoseCards();
                     CPU.LoseCards();
                 }
-                else if(CPU.GetCardValue(0) > Player1.GetCardValue(0))
+                else if (CPU.GetCardValue(0) > Player1.GetCardValue(0))
                 {
-                    CPU.AddCardToHand(Player1.GetCardItself());
-                    CPU.AddCardToHand(CPU.GetCardItself());
+                    CPU.AddCardToHand(Player1.GetCardItself(0));
+                    CPU.AddCardToHand(CPU.GetCardItself(0));
                     CPU.LoseCards();
                     Player1.LoseCards();
                 }
                 else if (Player1.GetCardValue(0) == CPU.GetCardValue(0))
+                {
+                    Console.SetCursorPosition(Console.WindowWidth / 2, Console.WindowHeight / 2);
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("WAR!!!");
+                    Console.ForegroundColor = ConsoleColor.Gray;
                     CardsAtWar();
+                }
+                WarCardPlace = 2;
 
                 WarTime = 0;
 
@@ -121,36 +138,45 @@ namespace CardGames
 
             if (Player1.GetHandSize() <= 0)
             {
-                string lose = "You Lose...";
-                Console.BackgroundColor = ConsoleColor.Red;
-                Console.ForegroundColor = ConsoleColor.Blue;
-                Console.Clear();
-                Console.SetCursorPosition((Console.WindowWidth - lose.Length) / 2, Console.WindowHeight / 2);
-                Console.Write(lose);
-                Console.ReadLine();
-                Environment.Exit(0);
+                YouLose();
             }
             else if (CPU.GetHandSize() <= 0)
             {
-                string victory = "You Win!!!";
-                Console.BackgroundColor = ConsoleColor.Green;
-                Console.ForegroundColor = ConsoleColor.DarkRed;
-                Console.Clear();
-                Console.SetCursorPosition((Console.WindowWidth - victory.Length) / 2, Console.WindowHeight / 2);
-                Console.Write(victory);
-                Console.ReadLine();
-                Environment.Exit(0);
+                YouWin();
             }
 
         }
 
+        private static void YouLose()
+        {
+            string lose = "You Lose...";
+            Console.BackgroundColor = ConsoleColor.Red;
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.Clear();
+            Console.SetCursorPosition((Console.WindowWidth - lose.Length) / 2, Console.WindowHeight / 2);
+            Console.Write(lose);
+            Console.ReadLine();
+            Environment.Exit(0);
+        }
+
+        private static void YouWin()
+        {
+            string victory = "You Win!!!";
+            Console.BackgroundColor = ConsoleColor.Green;
+            Console.ForegroundColor = ConsoleColor.DarkRed;
+            Console.Clear();
+            Console.SetCursorPosition((Console.WindowWidth - victory.Length) / 2, Console.WindowHeight / 2);
+            Console.Write(victory);
+            Console.ReadLine();
+            Environment.Exit(0);
+        }
 
         public void TurnCards(Cards P1, Cards Com)
         {
-            Console.SetCursorPosition(Console.WindowWidth / 2 - 1, Console.WindowHeight / 4);
+            Console.SetCursorPosition(WarCardPlace, Console.WindowHeight / 4 - (WarCardPlace % 4));
             Console.BackgroundColor = ConsoleColor.White;
             Console.Write("   ");
-            Console.SetCursorPosition(Console.WindowWidth / 2 - 1, Console.WindowHeight / 4 + 1);
+            Console.SetCursorPosition(WarCardPlace , Console.WindowHeight / 4 + 1 - (WarCardPlace % 4));
             if (P1.GetSuit() == (char)3 || P1.GetSuit() == (char)4)
                 Console.ForegroundColor = ConsoleColor.Red;
             else
@@ -168,10 +194,10 @@ namespace CardGames
             else if (P1.GetVal() == 13)
                 Console.Write('K' + " " + P1.GetSuit());
 
-            Console.SetCursorPosition(Console.WindowWidth / 2 - 1, (Console.WindowHeight / 4) * 3);
+            Console.SetCursorPosition(WarCardPlace, (Console.WindowHeight / 4) * 3 + (WarCardPlace % 4));
             Console.BackgroundColor = ConsoleColor.White;
             Console.Write("   ");
-            Console.SetCursorPosition(Console.WindowWidth / 2 - 1, (Console.WindowHeight / 4) * 3 - 1);
+            Console.SetCursorPosition(WarCardPlace, (Console.WindowHeight / 4) * 3 - 1 + (WarCardPlace % 4));
             if (Com.GetSuit() == 3 || Com.GetSuit() == 4)
                 Console.ForegroundColor = ConsoleColor.Red;
             else
@@ -197,27 +223,45 @@ namespace CardGames
         public void CardsAtWar()
         {
             WarTime += 4;
-            if (Player1.GetCardValue(WarTime) > CPU.GetCardValue(WarTime))
+            Console.ReadLine();
+            for (int i = WarTime - 3; i < WarTime + 1; i++)
             {
-                Player1.AddCardToHand(CPU.GetCardItself());
+                if (Player1.GetHandSize() <= i)
+                    YouLose();
+                else if (CPU.GetHandSize() <= i)
+                    YouWin();
+                WarCardPlace += 2;
+                TurnCards(Player1.GetCardItself(i), CPU.GetCardItself(i));
+                Console.ReadLine();
+            }
+            if (Player1.GetCardValue(WarTime) == 2 || CPU.GetCardValue(WarTime) == 2)
+                CardsAtWar();
+            else if (Player1.GetCardValue(WarTime) > CPU.GetCardValue(WarTime))
+            {
+                Player1.AddCardToHand(CPU.GetCardItself(0));
                 CPU.LoseCards();
-                Player1.AddCardToHand(CPU.GetCardItself());
+                Player1.AddCardToHand(CPU.GetCardItself(0));
                 CPU.LoseCards();
-                Player1.AddCardToHand(CPU.GetCardItself());
+                Player1.AddCardToHand(CPU.GetCardItself(0));
                 CPU.LoseCards();
-                Player1.AddCardToHand(CPU.GetCardItself());
+                Player1.AddCardToHand(CPU.GetCardItself(0));
                 CPU.LoseCards();
+                Player1.AddCardToHand(Player1.GetCardItself(0));
+                Player1.LoseCards();
+
             }
             else if (CPU.GetCardValue(WarTime) > Player1.GetCardValue(WarTime))
             {
-                CPU.AddCardToHand(Player1.GetCardItself());
+                CPU.AddCardToHand(Player1.GetCardItself(0));
                 Player1.LoseCards();
-                CPU.AddCardToHand(Player1.GetCardItself());
+                CPU.AddCardToHand(Player1.GetCardItself(0));
                 Player1.LoseCards();
-                CPU.AddCardToHand(Player1.GetCardItself());
+                CPU.AddCardToHand(Player1.GetCardItself(0));
                 Player1.LoseCards();
-                CPU.AddCardToHand(Player1.GetCardItself());
+                CPU.AddCardToHand(Player1.GetCardItself(0));
                 Player1.LoseCards();
+                CPU.AddCardToHand(CPU.GetCardItself(0));
+                CPU.LoseCards();
             }
             else if (Player1.GetCardValue(WarTime) == CPU.GetCardValue(WarTime))
                 CardsAtWar();

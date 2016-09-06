@@ -30,7 +30,7 @@ namespace CardGames
 
         public override int GetHandSize()
         {
-            return HandSize;
+            return PlayerHand.Count();
         }
 
         public override int GetCardValue(int i)
@@ -43,9 +43,12 @@ namespace CardGames
             return PlayerHand[0].GetSuit();
         }
 
-        public override Cards GetCardItself()
+        public override Cards GetCardItself(int ListSub)
         {
-            return PlayerHand[0];
+            if (HandSize < ListSub)
+                return PlayerHand[HandSize];
+            else
+                return PlayerHand[ListSub];
         }
 
         //public void TestingShow()
